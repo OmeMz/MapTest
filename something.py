@@ -68,20 +68,16 @@ while(running):
     Camera.x = max(0, min(Camera.x, tmxMap.width * tmxMap.tilewidth - window.get_width()))
     Camera.y = max(0, min(Camera.y, tmxMap.height * tmxMap.tileheight - window.get_height()))
 
-    # Check for collision uwu
-    for i in collisionObjects:
-        if Player.colliderect(i):
-            if Player.x < i.x:
-                Player.x = i.x - Player.width
-            elif Player.x > i.x + i.width:
-                Player.x = i.x + i.width
-            if Player.y < i.y:
-                Player.y = i.y - Player.height
-            elif Player.y > i.y + i.height:
-                Player.y = i.y + i.height
-
-
     window.fill(black)
+
+    # Check for collision uwu
+    playerRect = pygame.Rect(Player.x, Player.y, Player.width, Player.height)
+    for obj in collisionObjects:
+        if Player.x < obj.x + obj.width and Player.x + Player.width > obj.x and Player.y < obj.y + obj.height and Player.y + Player.height > obj.y:
+            Player.x = max(Player.x, obj.x + obj.width)
+            Player.x = min(Player.x, obj.x - Player.width)
+            Player.y = max(Player.y, obj.y + obj.height)
+            Player.y = min(Player.y, obj.y - Player.height)
 
     # Draw stuff lol
     # Draw map (ground layer)
